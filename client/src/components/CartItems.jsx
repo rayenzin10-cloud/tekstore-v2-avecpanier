@@ -1,25 +1,20 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getitemsfromcart } from "../redux/cartreducer";
 const Cartitems = () => {
-  const [data, setdata] = useState([]);
+
+  const dispatch = useDispatch();
+  const data = useSelector((state) => {
+    return state.cart.data;
+  });
 
   let cartid = JSON.parse(localStorage.getItem("cartid"));
 
-  const getitemsfromcart = () => {
-    axios
-      .get(`https://tek-server-hyxr.onrender.com/api/cart/${cartid}`)
-      .then((respsonse) => {
-        console.log(respsonse.data);
 
-        setdata(respsonse.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   useEffect(() => {
-    getitemsfromcart();
+    dispatch(getitemsfromcart());
   }, []);
 
   const total = () => {
